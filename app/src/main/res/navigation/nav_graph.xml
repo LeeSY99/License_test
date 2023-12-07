@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/homefragment">
+
+    <fragment
+        android:id="@+id/homefragment"
+        android:name="com.example.license_test.HomeFragment"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/hometoquiz"
+            app:destination="@+id/quizfragment"/>
+    </fragment>
+
+    <!-- 시험 -->
+    <fragment
+        android:id="@+id/quizfragment"
+        android:name="com.example.license_test.QuizFragment"
+        tools:layout="@layout/fragment_quiz">
+
+        <action
+            android:id="@+id/quiztopass"
+            app:destination="@+id/passfragment"/>
+        <action
+            android:id="@+id/quiztofail"
+            app:destination="@+id/failfragment"/>
+
+    </fragment>
+
+    <!-- 링크 -->
+    <fragment
+        android:id="@+id/urlfragment"
+        android:name="com.example.license_test.UrlFragment"
+        tools:layout="@layout/fragment_url">
+
+    </fragment>
+
+    <!-- 필기합격 -->
+    <fragment
+        android:id="@+id/passfragment"
+        android:name="com.example.license_test.PassFragment"
+        tools:layout="@layout/fragment_pass">
+
+        <action
+            android:id="@+id/passtourl"
+            app:destination="@+id/urlfragment"/>
+        <action
+            android:id="@+id/passtohome"
+            app:destination="@+id/homefragment"/>
+    </fragment>
+
+    <!-- 필기불합격 -->
+    <fragment
+        android:id="@+id/failfragment"
+        android:name="com.example.license_test.FailFragment"
+        tools:layout="@layout/fragment_fail">
+
+        <action
+            android:id="@+id/failtoquiz"
+            app:destination="@+id/quizfragment"/>
+        <action
+            android:id="@+id/failtohome"
+            app:destination="@+id/homefragment"/>
+
+    </fragment>
+
+</navigation>
