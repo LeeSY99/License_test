@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.license_test.QuizViewModel" />
+    </data>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".QuizFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
         android:id="@+id/questionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="질문이 여기에 표시됩니다."
+        android:text="@{viewModel.currentProblem.toString()}"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="30dp"
-        android:layout_marginTop="50dp"
+        android:textSize="25dp"
+        android:layout_marginTop="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"/>
 
@@ -35,25 +44,25 @@
             android:id="@+id/option1RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="선택지 1"/>
+            android:text="@{viewModel.opt1}"/>
 
         <RadioButton
             android:id="@+id/option2RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="선택지 2"/>
+            android:text="@{viewModel.opt2}"/>
 
         <RadioButton
             android:id="@+id/option3RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="선택지 3"/>
+            android:text="@{viewModel.opt3}"/>
 
         <RadioButton
             android:id="@+id/option4RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="선택지 4"/>
+            android:text="@{viewModel.opt4}"/>
     </RadioGroup>
 
     <Button
@@ -66,4 +75,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:id="@+id/quiz_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{@string/question_count(viewModel.currentQuizCount.toString())}"
+        app:layout_constraintTop_toBottomOf="@+id/submitButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="30dp"
+        android:layout_marginTop="20dp"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@{viewModel.score.toString()}"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/quiz_count"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@{viewModel.answer}"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

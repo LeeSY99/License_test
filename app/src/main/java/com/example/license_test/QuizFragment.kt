@@ -1,15 +1,17 @@
 package com.example.license_test
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.license_test.databinding.FragmentQuizBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
 
 /**
  * A simple [Fragment] subclass.
@@ -17,43 +19,77 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class QuizFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentQuizBinding
+    private val viewModel: QuizViewModel by viewModels()
+    private var cutOffScore: Int=0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        arguments?.let {
+            cutOffScore = it.getInt("cutOffScore", 0)
+        }
+
+        // 커트라인 점수 확인 (예시로 로그에 출력)
+        Log.d("QuizFragment", "Cut off score: $cutOffScore")
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_quiz, container, false)
+        binding = FragmentQuizBinding.inflate(inflater, container,false)
+        binding.viewModel=viewModel
+        binding.lifecycleOwner=this
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment QuizFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            QuizFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.submitButton.setOnClickListener {onSubmit()}
+    }
+
+    private fun getSelectedIndex(): Int{
+        val selectedRadioButtonId = binding.answerRadioGroup.checkedRadioButtonId
+        val selectedRadioButton: RadioButton? = when (selectedRadioButtonId) {
+            binding.option1RadioButton.id -> binding.option1RadioButton
+            binding.option2RadioButton.id -> binding.option2RadioButton
+            binding.option3RadioButton.id -> binding.option3RadioButton
+            binding.option4RadioButton.id -> binding.option4RadioButton
+            else -> null
+        }
+        return selectedRadioButton?.let { binding.answerRadioGroup.indexOfChild(it) } ?: -1
+    }
+    private fun onSubmit(){
+
+        val selectedIndex = (getSelectedIndex()+1).toString()
+        val isCorrect = viewModel.isPlayerCorrect(selectedIndex)
+        Log.d("QuizFragment", "selected index $selectedIndex")
+        if(isCorrect){
+            viewModel.increaseScore()
+        }
+        viewModel.increaseCount()
+        val currentcount=viewModel.currentQuizCount.value
+        val currentscore=viewModel.score.value
+        if (currentcount ==20){
+            binding.submitButton.text = "제출하기"
+        } else if (currentcount != null) {
+            if(currentcount > 20){
+                val bundle = Bundle().apply {
+                    if (currentscore != null) {
+                        putInt("currentscore", currentscore)
+                    }
+                }
+                val navController = findNavController()
+                if(viewModel.score.value!! >= cutOffScore){
+                    navController.navigate(R.id.quiztopass, bundle)
+                }
+                else{
+                    navController.navigate(R.id.quiztofail, bundle)
                 }
             }
+        }
+
+        viewModel.getNextProblem()
+        binding.answerRadioGroup.clearCheck()
     }
+
 }

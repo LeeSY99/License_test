@@ -9,7 +9,7 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/pass_text"
+        android:id="@+id/fail_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
@@ -19,26 +19,48 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <TextView
+        android:id="@+id/fail_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="24dp"
+        android:text="score"
+        app:layout_constraintTop_toBottomOf="@+id/fail_text"
+        />
+
     <Button
-        android:id="@+id/apply_button"
+        android:id="@+id/retry_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="다시풀어보기"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="40dp"
-        app:layout_constraintTop_toBottomOf="@+id/pass_text"
+        app:layout_constraintTop_toBottomOf="@+id/fail_score"
         app:layout_constraintLeft_toLeftOf="parent"
         />
 
     <Button
-        android:id="@+id/go_home_pass"
+        android:id="@+id/go_home_fail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="홈으로 돌아가기"
         android:layout_marginTop="20dp"
         android:layout_marginRight="40dp"
-        app:layout_constraintTop_toBottomOf="@+id/pass_text"
+        app:layout_constraintTop_toBottomOf="@+id/fail_score"
         app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:text="실제 필기시험은 총 40문제이며\n문제별로 배점이 다르니 주의하시기 바랍니다."
+        app:layout_constraintTop_toBottomOf="@+id/go_home_fail"
         />
 
 
